@@ -10,11 +10,11 @@ class Sib3aApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SIB 3A - Dahniar Davina',
+      title: 'Dahniar Davina Sib3a - Flutter Scaffold & AppBar',
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Belajar Scaffold & AppBar"),
-          backgroundColor: const Color.fromARGB(255, 217, 18, 91),
+          backgroundColor: Colors.pink,
           actions: const [
             Icon(Icons.search), // ikon di kanan
             Icon(Icons.settings),
@@ -25,7 +25,7 @@ class Sib3aApp extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: const <Widget>[
               DrawerHeader(
-                decoration: BoxDecoration(color: Color.fromARGB(255, 236, 156, 185)),
+                decoration: BoxDecoration(color: Color.fromARGB(255, 230, 97, 141)),
                 child: Text(
                   'Drawer Header',
                   style: TextStyle(color: Colors.white, fontSize: 24),
@@ -91,7 +91,7 @@ class Sib3aApp extends StatelessWidget {
                 height: 250,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.teal, Colors.tealAccent],
+                    colors: [Color.fromARGB(255, 220, 44, 102), Color.fromARGB(255, 255, 128, 171)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
