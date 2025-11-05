@@ -5,8 +5,8 @@ void main() {
     MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(), 
-        '/second': (context) => SecondPage()
+        '/': (context) => HomePage(),
+        '/second': (context) => SecondPage(),
       },
     ),
   );
@@ -19,15 +19,16 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(title: Text('Halaman Utama')),
       body: Center(
         child: ElevatedButton(
+          // child: Text('Ke Halaman Kedua'),
+          // onPressed: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => SecondPage()),
+          //   );
+          // },
+          onPressed: () => Navigator.pushNamed(context, '/second'),
           child: Text('Ke Halaman Kedua'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SecondPage()),
-            );
-          },
         ),
-      
       ),
     );
   }
