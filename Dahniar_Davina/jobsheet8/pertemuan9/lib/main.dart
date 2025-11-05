@@ -1,75 +1,20 @@
-//import 'package:camera/camera.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'camera_page.dart';
 
-/*late List<CameraDescription> _cameras;
+// ====== INI DI LUAR CLASS ======
+late List<CameraDescription> _cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   _cameras = await availableCameras();
-  runApp(const CameraApp());
+  runApp(MyMaterialApp(cameras: _cameras));
 }
 
-/// CameraApp is the Main Application.
-class CameraApp extends StatefulWidget {
-  /// Default Constructor
-  const CameraApp({super.key});
-
-  @override
-  State<CameraApp> createState() => _CameraAppState();
-}
-
-class _CameraAppState extends State<CameraApp> {
-  late CameraController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = CameraController(_cameras[0], ResolutionPreset.max);
-    controller
-        .initialize()
-        .then((_) {
-          if (!mounted) {
-            return;
-          }
-          setState(() {});
-        })
-        .catchError((Object e) {
-          if (e is CameraException) {
-            switch (e.code) {
-              case 'CameraAccessDenied':
-                // Handle access errors here.
-                break;
-              default:
-                // Handle other errors here.
-                break;
-            }
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return Container();
-    }
-    return MaterialApp(home: CameraPreview(controller));
-  }*/
-
-  // Implementasika Material Design dari https://pub.dev.
-
-void main() {
-  runApp(const MyMaterialApp());
-}
-
+// ====== APLIKASI UTAMA ======
 class MyMaterialApp extends StatelessWidget {
-  const MyMaterialApp({super.key});
+  final List<CameraDescription> cameras;
+  const MyMaterialApp({super.key, required this.cameras});
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +26,15 @@ class MyMaterialApp extends StatelessWidget {
         colorSchemeSeed: Colors.pink,
         brightness: Brightness.light,
       ),
-      home: const HomePage(),
+      home: HomePage(cameras: cameras),
     );
   }
 }
 
+// ====== HALAMAN BERANDA ======
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final List<CameraDescription> cameras;
+  const HomePage({super.key, required this.cameras});
 
   @override
   State<HomePage> createState() => _HomePageStatefulState();
@@ -96,18 +43,18 @@ class HomePage extends StatefulWidget {
 class _HomePageStatefulState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  
-
-  // Fungsi ganti halaman botton navigation
   void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-  } 
+  }
 
   void _onTakePhotoPressed() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Take Photo Pressed')),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraPage(camera: widget.cameras[0]),
+      ),
     );
   }
 
@@ -120,9 +67,7 @@ class _HomePageStatefulState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Material Design App'),
         actions: const [
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/gambar.jpg'),
-          ),
+          CircleAvatar(backgroundImage: AssetImage('assets/avatar.jpeg')),
           SizedBox(width: 16),
         ],
       ),
@@ -132,7 +77,6 @@ class _HomePageStatefulState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 24),
-            // Take Photo Button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -159,63 +103,15 @@ class _HomePageStatefulState extends State<HomePage> {
         destinations: const [
           NavigationDestination(icon: Icon(Icons.favorite), label: ''),
           NavigationDestination(icon: Icon(Icons.explore), label: ''),
-          NavigationDestination(icon: Icon(Icons.account_circle_outlined), label: ''), 
+          NavigationDestination(icon: Icon(Icons.account_circle_outlined), label: ''),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _onTakePhotoPressed,
         icon: const Icon(Icons.camera_alt),
-        label: const Text ("Take a Photo"),
+        label: const Text("Take a Photo"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );
-  }
-
-  Widget buildImageCard(String title, String count, String imagePath) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.black.withOpacity(0.6),
-                  Colors.transparent,
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            left: 12,
-            bottom: 8,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '$count items',
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 
@@ -236,4 +132,3 @@ class _HomePageStatefulState extends State<HomePage> {
     );
   }
 }
-
